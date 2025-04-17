@@ -31,10 +31,15 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         logout: false
         
-    - name: Use Skopeo Tools Sync Image to Docker Hub
-      run: |
-        echo "源镜像: docker://docker.io/starrocks/be-ubuntu:3.3-latest"
-        echo "目标镜像: docker://registry.cn-hangzhou.aliyuncs.com/${{ secrets.DOCKER_NAMESPACE }}/starrocks_be-ubuntu:3.3-latest"
-        skopeo --debug copy \
-          docker://docker.io/starrocks/be-ubuntu:3.3-latest \
-          docker://registry.cn-hangzhou.aliyuncs.com/hermit_studio/starrocks_be-ubuntu:3.3-latest
+    - name: Sync Image with Skopeo
+            run: |
+              # 显示完整目标路径（调试用）
+              echo "目标镜像: docker://registry.cn-hangzhou.aliyuncs.com/${{ secrets.DOCKER_NAMESPACE }}/starrocks_be-ubuntu:3.3-latest"
+              
+              # 强制重新推送
+              skopeo copy --debug \
+                docker://docker.io/starrocks/be-ubuntu:3.3-latest \
+                docker://registry.cn-hangzhou.aliyuncs.com/${{ secrets.DOCKER_NAMESPACE }}/starrocks_be-ubuntu:3.3-latest
+    
+              # 验证镜像是否存在
+              skopeo inspect docker://registry.cn-hangzhou.aliyuncs.com/hermit_studio/starrocks_be-ubuntu:3.3-latest
