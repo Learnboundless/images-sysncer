@@ -32,7 +32,7 @@ jobs:
         logout: false
         
     - name: Sync Image with Skopeo
-            run: |
+      run: |
               # 显示完整目标路径（调试用）
               echo "目标镜像: docker://registry.cn-hangzhou.aliyuncs.com/${{ secrets.DOCKER_NAMESPACE }}/starrocks_be-ubuntu:3.3-latest"
               
